@@ -1,0 +1,77 @@
+use crate::adder::adder;
+
+pub fn multiplier(mut a: u32, mut b: u32) -> u32 {
+    let mut result: u32 = 0;
+    while b != 0 {
+        if (b & 1) == 1 {
+            result = adder(result, a);
+        }
+        a <<= 1;
+        b >>= 1;
+    }
+    result
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_zero() {
+        assert_eq!(multiplier(0, 0), 0);
+        assert_eq!(multiplier(0, 42), 0);
+        assert_eq!(multiplier(42, 0), 0);
+    }
+
+    #[test]
+    fn test_one() {
+        assert_eq!(multiplier(1, 1), 1);
+        assert_eq!(multiplier(1, 42), 42);
+        assert_eq!(multiplier(42, 1), 42);
+    }
+
+    #[test]
+    fn test_simple() {
+        assert_eq!(multiplier(3, 5), 15);
+        assert_eq!(multiplier(5, 3), 15);
+        assert_eq!(multiplier(6, 4), 24);
+        assert_eq!(multiplier(7, 7), 49);
+    }
+
+    #[test]
+    fn test_commutative() {
+        for (a, b) in [(3, 5), (17, 9), (123, 456), (0, 999), (1, 1000)] {
+            assert_eq!(multiplier(a, b), multiplier(b, a));
+        }
+    }
+
+    #[test]
+    fn test_powers_of_two() {
+        assert_eq!(multiplier(7, 2), 14);
+        assert_eq!(multiplier(7, 4), 28);
+        assert_eq!(multiplier(7, 8), 56);
+        assert_eq!(multiplier(1, 1024), 1024);
+    }
+
+    #[test]
+    fn test_large_values() {
+        assert_eq!(multiplier(1000, 1000), 1_000_000);
+        assert_eq!(multiplier(65535, 2), 131070);
+    }
+
+    #[test]
+    fn test_overflow_wraparound() {
+        assert_eq!(multiplier(u32::MAX, 2), u32::MAX.wrapping_mul(2));
+        assert_eq!(multiplier(u32::MAX, u32::MAX), u32::MAX.wrapping_mul(u32::MAX));
+        assert_eq!(multiplier(1 << 31, 2), 0);
+    }
+
+    #[test]
+    fn test_against_native_mul() {
+        for a in 0u32..300 {
+            for b in 0u32..300 {
+                assert_eq!(multiplier(a, b), a.wrapping_mul(b));
+            }
+        }
+    }
+}
