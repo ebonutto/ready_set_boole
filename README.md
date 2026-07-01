@@ -1,0 +1,2 @@
+# ready_set_boole
+Discover the basics of computer-related mathematics with Boolean Algebra and Sets Theory!
