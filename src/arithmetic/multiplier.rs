@@ -1,4 +1,4 @@
-use crate::adder::adder;
+use super::adder::adder;
 
 pub fn multiplier(mut a: u32, mut b: u32) -> u32 {
     let mut result: u32 = 0;
