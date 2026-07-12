@@ -4,6 +4,7 @@ pub fn reverse_map(n: f64) -> (u16, u16) {
         "reverse_map: map must be between 0 and 1 ({})",
         n
     );
+
     let z = (n * u32::MAX as f64) as u32;
 
     let mut x: u16 = 0;
