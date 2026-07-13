@@ -57,7 +57,7 @@ pub fn parse(formula: &str) -> Formula {
     stack.pop().unwrap()
 }
 
-fn to_nnf(f: Formula) -> Formula {
+pub fn to_nnf(f: Formula) -> Formula {
     match f {
         // A variable is already in NNF, negated or not
         Formula::Var(_) => f,
