@@ -1,3 +1,4 @@
+#[derive(Debug, Clone)]
 pub enum Formula {
     Var(char),
     Not(Box<Formula>),
@@ -46,6 +47,7 @@ pub fn parse(formula: &str) -> Formula {
             _ => panic!("parse: invalid character '{}'", c),
         }
     }
+
     if stack.len() != 1 {
         panic!(
             "parse: final stack has {} element(s) instead of 1",
