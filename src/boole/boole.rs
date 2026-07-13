@@ -9,6 +9,54 @@ pub enum Formula {
     Equiv(Box<Formula>, Box<Formula>),
 }
 
+pub fn parse(formula: &str) -> Formula {
+    let mut stack: Vec<Formula> = Vec::new();
+
+    for c in formula.chars() {
+        match c {
+            'A'..'Z' => stack.push(Formula::Var(c)),
+            '!' => {
+                let a = stack.pop().expect("parse: stack underflow on '!'");
+                stack.push(Formula::Not(Box::new(a)));
+            }
+            '&' => {
+                let b = stack.pop().expect("parse: stack underflow on '&'");
+                let a = stack.pop().expect("parse: stack underflow on '&'");
+                stack.push(Formula::And(Box::new(a), Box::new(b)));
+            }
+            '|' => {
+                let b = stack.pop().expect("parse: stack underflow on '|'");
+                let a = stack.pop().expect("parse: stack underflow on '|'");
+                stack.push(Formula::Or(Box::new(a), Box::new(b)));
+            }
+            '^' => {
+                let b = stack.pop().expect("parse: stack underflow on '^'");
+                let a = stack.pop().expect("parse: stack underflow on '^'");
+                stack.push(Formula::Xor(Box::new(a), Box::new(b)));
+            }
+            '>' => {
+                let b = stack.pop().expect("parse: stack underflow on '>'");
+                let a = stack.pop().expect("parse: stack underflow on '>'");
+                stack.push(Formula::Implies(Box::new(a), Box::new(b)));
+            }
+            '=' => {
+                let b = stack.pop().expect("parse: stack underflow on '='");
+                let a = stack.pop().expect("parse: stack underflow on '='");
+                stack.push(Formula::Equiv(Box::new(a), Box::new(b)));
+            }
+            _ => panic!("parse: invalid character '{}'", c),
+        }
+    }
+
+    if stack.len() != 1 {
+        panic!(
+            "parse: final stack has {} element(s) instead of 1",
+            stack.len()
+        );
+    }
+    stack.pop().unwrap()
+}
+
 fn to_nnf(f: Formula) -> Formula {
     match f {
         // A variable is already in NNF, negated or not
@@ -70,54 +118,6 @@ fn to_nnf(f: Formula) -> Formula {
             to_nnf(Formula::Or(Box::new(left), Box::new(right)))
         }
     }
-}
-
-pub fn parse(formula: &str) -> Formula {
-    let mut stack: Vec<Formula> = Vec::new();
-
-    for c in formula.chars() {
-        match c {
-            'A'..'Z' => stack.push(Formula::Var(c)),
-            '!' => {
-                let a = stack.pop().expect("parse: stack underflow on '!'");
-                stack.push(Formula::Not(Box::new(a)));
-            }
-            '&' => {
-                let b = stack.pop().expect("parse: stack underflow on '&'");
-                let a = stack.pop().expect("parse: stack underflow on '&'");
-                stack.push(Formula::And(Box::new(a), Box::new(b)));
-            }
-            '|' => {
-                let b = stack.pop().expect("parse: stack underflow on '|'");
-                let a = stack.pop().expect("parse: stack underflow on '|'");
-                stack.push(Formula::Or(Box::new(a), Box::new(b)));
-            }
-            '^' => {
-                let b = stack.pop().expect("parse: stack underflow on '^'");
-                let a = stack.pop().expect("parse: stack underflow on '^'");
-                stack.push(Formula::Xor(Box::new(a), Box::new(b)));
-            }
-            '>' => {
-                let b = stack.pop().expect("parse: stack underflow on '>'");
-                let a = stack.pop().expect("parse: stack underflow on '>'");
-                stack.push(Formula::Implies(Box::new(a), Box::new(b)));
-            }
-            '=' => {
-                let b = stack.pop().expect("parse: stack underflow on '='");
-                let a = stack.pop().expect("parse: stack underflow on '='");
-                stack.push(Formula::Equiv(Box::new(a), Box::new(b)));
-            }
-            _ => panic!("parse: invalid character '{}'", c),
-        }
-    }
-
-    if stack.len() != 1 {
-        panic!(
-            "parse: final stack has {} element(s) instead of 1",
-            stack.len()
-        );
-    }
-    stack.pop().unwrap()
 }
 
 pub fn to_rpn(f: &Formula) -> String {
