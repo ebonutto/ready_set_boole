@@ -1,4 +1,4 @@
-use crate::boole::{Formula, parse, to_rpn};
+use super::boole::{Formula, parse, to_rpn};
 
 fn to_nnf(f: Formula) -> Formula {
     match f {
@@ -42,6 +42,13 @@ fn to_nnf(f: Formula) -> Formula {
         // A | B => recurse on both sides
         Formula::Or(a, b) => Formula::Or(Box::new(to_nnf(*a)), Box::new(to_nnf(*b))),
 
+        // (A ^ B) => (A & !B) | (!A & B)
+        Formula::Xor(a, b) => {
+            let left = Formula::And(a.clone(), Box::new(Formula::Not(b.clone())));
+            let right = Formula::And(Box::new(Formula::Not(a)), b);
+            to_nnf(Formula::Or(Box::new(left), Box::new(right)))
+        }
+
         // (A > B) => !A | B, then recurse
         Formula::Implies(a, b) => {
             to_nnf(Formula::Or(Box::new(Formula::Not(a)), Box::new(to_nnf(*b))))
@@ -57,7 +64,5 @@ fn to_nnf(f: Formula) -> Formula {
 }
 
 pub fn negation_normal_form(formula: &str) -> String {
-    let ast = parse(formula);
-    let nnf_ast = to_nnf(ast);
-    to_rpn(&nnf_ast)
+    to_rpn(&to_nnf(parse(formula)))
 }
