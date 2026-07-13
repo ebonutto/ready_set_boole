@@ -64,5 +64,7 @@ fn to_nnf(f: Formula) -> Formula {
 }
 
 pub fn negation_normal_form(formula: &str) -> String {
-    to_rpn(&to_nnf(parse(formula)))
+    let ast = parse(formula);
+    let nnf_ast = to_nnf(ast);
+    to_rpn(&nnf_ast)
 }
