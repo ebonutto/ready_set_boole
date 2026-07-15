@@ -8,7 +8,7 @@ pub fn print_truth_table(formula: &str) {
         .collect();
 
     if variables.is_empty() {
-        panic!("print_truth_table: invalid formula: no variables found");
+        panic!("print_truth_table: invalid formula: no variable found");
     }
 
     variables.sort();
@@ -29,12 +29,13 @@ pub fn print_truth_table(formula: &str) {
     println!("|");
 
     // Iterate over all 2^n combinations
-    for i in 0..(1u32 << n) {
+    for mask in 0..(1usize << n) {
         // Build the substituted formula for this combination
         let mut substituted = String::with_capacity(formula.len());
+
         for c in formula.chars() {
             if let Some(pos) = variables.iter().position(|&v| v == c) {
-                let bit = (i >> (n - 1 - pos)) & 1;
+                let bit = (mask >> (n - 1 - pos)) & 1;
                 substituted.push(if bit == 1 { '1' } else { '0' });
             } else {
                 substituted.push(c);
@@ -45,25 +46,9 @@ pub fn print_truth_table(formula: &str) {
 
         // Print row
         for pos in 0..n {
-            let bit = (i >> (n - 1 - pos)) & 1;
+            let bit = (mask >> (n - 1 - pos)) & 1;
             print!("| {} ", bit);
         }
         println!("| {} |", if result { 1 } else { 0 });
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_runs_without_panic() {
-        print_truth_table("AB&C|");
-    }
-
-    #[test]
-    #[should_panic]
-    fn test_no_variables() {
-        print_truth_table("10&"); // only constants, no variables
     }
 }

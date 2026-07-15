@@ -1,6 +1,7 @@
 use super::boolean_evaluation::eval_formula;
 
 pub fn sat(formula: &str) -> bool {
+    // Extract unique variables, in alphabetical order
     let mut variables: Vec<char> = formula
         .chars()
         .filter(|c| c.is_ascii_uppercase())
@@ -15,26 +16,17 @@ pub fn sat(formula: &str) -> bool {
 
     let n = variables.len();
 
-    let mut indexes: [Option<usize>; 26] = [None; 26];
+    // Iterate over all 2^n combinations
+    for mask in 0..(1usize << n) {
+        // Build the substituted formula for this combination
+        let mut substituted = String::with_capacity(formula.len());
 
-    for (i, &c) in variables.iter().enumerate() {
-        indexes[(c as u8 - b'A') as usize] = Some(i);
-    }
-
-    let chars: Vec<char> = formula.chars().collect();
-    let combinations = 1usize << n;
-
-    for mask in 0..combinations {
-        let mut substituted = String::with_capacity(chars.len());
-
-        for &c in &chars {
-            match c {
-                'A'..='Z' => {
-                    let pos = indexes[(c as u8 - b'A') as usize].unwrap();
-                    let bit = (mask >> (n - 1 - pos)) & 1;
-                    substituted.push(if bit == 1 { '1' } else { '0' });
-                }
-                _ => substituted.push(c),
+        for c in formula.chars() {
+            if let Some(pos) = variables.iter().position(|&v| v == c) {
+                let bit = (mask >> (n - 1 - pos)) & 1;
+                substituted.push(if bit == 1 { '1' } else { '0' });
+            } else {
+                substituted.push(c);
             }
         }
 
