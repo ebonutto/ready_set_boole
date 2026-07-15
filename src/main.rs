@@ -15,11 +15,26 @@ use boole::negation_normal_form::negation_normal_form;
 
 fn test_negation_normal_form() {
     println!("=== Exercise 05 - Negation Normal Form ===");
-    println!("negation_normal_form(\"AB&!\")   = {}", negation_normal_form("AB&!"));
-    println!("negation_normal_form(\"AB|!\")   = {}", negation_normal_form("AB|!"));
-    println!("negation_normal_form(\"AB>\")    = {}", negation_normal_form("AB>"));
-    println!("negation_normal_form(\"AB=\")    = {}", negation_normal_form("AB="));
-    println!("negation_normal_form(\"AB|C&!\") = {}", negation_normal_form("AB|C&!"));
+    println!(
+        "negation_normal_form(\"AB&!\")   = {}",
+        negation_normal_form("AB&!")
+    );
+    println!(
+        "negation_normal_form(\"AB|!\")   = {}",
+        negation_normal_form("AB|!")
+    );
+    println!(
+        "negation_normal_form(\"AB>\")    = {}",
+        negation_normal_form("AB>")
+    );
+    println!(
+        "negation_normal_form(\"AB=\")    = {}",
+        negation_normal_form("AB=")
+    );
+    println!(
+        "negation_normal_form(\"AB|C&!\") = {}",
+        negation_normal_form("AB|C&!")
+    );
 }
 
 fn main() {

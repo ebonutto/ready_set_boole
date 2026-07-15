@@ -1,11 +1,10 @@
 use super::boolean_evaluation::eval_formula;
 
 pub fn print_truth_table(formula: &str) {
+    // Prints the truth table for the given RPN formula.
+
     // Extract variables from the formula
-    let mut variables: Vec<char> = formula
-        .chars()
-        .filter(|c| c.is_ascii_uppercase())
-        .collect();
+    let mut variables: Vec<char> = formula.chars().filter(|c| c.is_ascii_uppercase()).collect();
 
     if variables.is_empty() {
         panic!("print_truth_table: invalid formula: no variable found");

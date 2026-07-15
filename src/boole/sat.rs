@@ -1,11 +1,11 @@
 use super::boolean_evaluation::eval_formula;
 
 pub fn sat(formula: &str) -> bool {
+    // Check if the given RPN formula is satisfiable:
+    // returns true if at least one combination of variable values makes it true.
+
     // Extract variables from the formula
-    let mut variables: Vec<char> = formula
-        .chars()
-        .filter(|c| c.is_ascii_uppercase())
-        .collect();
+    let mut variables: Vec<char> = formula.chars().filter(|c| c.is_ascii_uppercase()).collect();
 
     if variables.is_empty() {
         return eval_formula(formula);
