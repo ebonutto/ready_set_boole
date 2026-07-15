@@ -1,7 +1,7 @@
 use super::boolean_evaluation::eval_formula;
 
 pub fn print_truth_table(formula: &str) {
-    // Extract unique variables, in alphabetical order
+    // Extract variables from the formula
     let mut variables: Vec<char> = formula
         .chars()
         .filter(|c| c.is_ascii_uppercase())
@@ -11,6 +11,7 @@ pub fn print_truth_table(formula: &str) {
         panic!("print_truth_table: invalid formula: no variable found");
     }
 
+    // Sort and remove duplicate variables
     variables.sort();
     variables.dedup();
 
@@ -28,7 +29,7 @@ pub fn print_truth_table(formula: &str) {
     }
     println!("|");
 
-    // Iterate over all 2^n combinations
+    // Iterate over all 2^n possible combinations
     for mask in 0..(1usize << n) {
         // Build the substituted formula for this combination
         let mut substituted = String::with_capacity(formula.len());

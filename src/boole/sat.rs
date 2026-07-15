@@ -1,7 +1,7 @@
 use super::boolean_evaluation::eval_formula;
 
 pub fn sat(formula: &str) -> bool {
-    // Extract unique variables, in alphabetical order
+    // Extract variables from the formula
     let mut variables: Vec<char> = formula
         .chars()
         .filter(|c| c.is_ascii_uppercase())
@@ -11,12 +11,13 @@ pub fn sat(formula: &str) -> bool {
         return eval_formula(formula);
     }
 
+    // Sort and remove duplicate variables
     variables.sort();
     variables.dedup();
 
     let n = variables.len();
 
-    // Iterate over all 2^n combinations
+    // Iterate over all 2^n possible combinations
     for mask in 0..(1usize << n) {
         // Build the substituted formula for this combination
         let mut substituted = String::with_capacity(formula.len());
