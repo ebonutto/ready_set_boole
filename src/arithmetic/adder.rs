@@ -4,6 +4,7 @@ pub fn adder(mut a: u32, mut b: u32) -> u32 {
         a ^= b;
         b = carry
     }
+
     a
 }
 
