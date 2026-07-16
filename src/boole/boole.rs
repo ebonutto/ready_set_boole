@@ -59,64 +59,84 @@ pub fn parse(formula: &str) -> Formula {
 
 pub fn to_nnf(f: Formula) -> Formula {
     match f {
-        // A variable is already in NNF, negated or not
         Formula::Var(_) => f,
 
         Formula::Not(inner) => match *inner {
-            // A negated variable is already NNF
             Formula::Var(c) => Formula::Not(Box::new(Formula::Var(c))),
 
-            // !!A => A
+            // !!A <=> A
             Formula::Not(a) => to_nnf(*a),
 
-            // !(A & B) => !A | !B
+            // !(A & B) <=> !A | !B
             Formula::And(a, b) => Formula::Or(
                 Box::new(to_nnf(Formula::Not(a))),
                 Box::new(to_nnf(Formula::Not(b))),
             ),
 
-            // !(A | B) => !A & !B
+            // !(A | B) <=> !A & !B
             Formula::Or(a, b) => Formula::And(
                 Box::new(to_nnf(Formula::Not(a))),
                 Box::new(to_nnf(Formula::Not(b))),
             ),
 
-            // !(A ^ B) => A = B
+            // !(A ^ B) <=> A = B
             Formula::Xor(a, b) => to_nnf(Formula::Equiv(a, b)),
 
-            // !(A > B) => A & !B
+            // !(A > B) <=> A & !B
             Formula::Implies(a, b) => {
                 Formula::And(Box::new(to_nnf(*a)), Box::new(to_nnf(Formula::Not(b))))
             }
 
-            // !(A = B) => A ^ B
+            // !(A = B) <=> A ^ B
             Formula::Equiv(a, b) => to_nnf(Formula::Xor(a, b)),
         },
 
-        // A & B => recurse on both sides
         Formula::And(a, b) => Formula::And(Box::new(to_nnf(*a)), Box::new(to_nnf(*b))),
 
-        // A | B => recurse on both sides
         Formula::Or(a, b) => Formula::Or(Box::new(to_nnf(*a)), Box::new(to_nnf(*b))),
 
-        // (A ^ B) => (A & !B) | (!A & B)
+        // (A ^ B) <=> (A & !B) | (!A & B)
         Formula::Xor(a, b) => {
             let left = Formula::And(a.clone(), Box::new(Formula::Not(b.clone())));
             let right = Formula::And(Box::new(Formula::Not(a)), b);
             to_nnf(Formula::Or(Box::new(left), Box::new(right)))
         }
 
-        // (A > B) => !A | B, then recurse
+        // (A > B) <=> !A | B
         Formula::Implies(a, b) => {
-            to_nnf(Formula::Or(Box::new(Formula::Not(a)), Box::new(to_nnf(*b))))
+            to_nnf(Formula::Or(Box::new(Formula::Not(a)), Box::new(to_nnf(*b)))) // Error ?
         }
 
-        // (A = B) => (A & B) | (!A & !B), then recurse
+        // (A = B) <=> (A & B) | (!A & !B)
         Formula::Equiv(a, b) => {
             let left = Formula::And(a.clone(), b.clone());
             let right = Formula::And(Box::new(Formula::Not(a)), Box::new(Formula::Not(b)));
             to_nnf(Formula::Or(Box::new(left), Box::new(right)))
         }
+    }
+}
+
+fn distribute_or(a: Formula, b: Formula) -> Formula {
+    match (a, b) {
+        // (X & Y) | Z <=> (X | Z) & (Y | Z)
+        (Formula::And(x, y), z) => Formula::And(
+            Box::new(distribute_or(*x, z.clone())),
+            Box::new(distribute_or(*y, z)),
+        ),
+        // Z | (X & Y) <=> (Z | X) & (Z | Y)
+        (z, Formula::And(x, y)) => Formula::And(
+            Box::new(distribute_or(z.clone(), *x)),
+            Box::new(distribute_or(z, *y)),
+        ),
+        (a, b) => Formula::Or(Box::new(a), Box::new(b)),
+    }
+}
+
+pub fn to_cnf(f: Formula) -> Formula {
+    match f {
+        Formula::And(a, b) => Formula::And(Box::new(to_cnf(*a)), Box::new(to_cnf(*b))),
+        Formula::Or(a, b) => distribute_or(to_cnf(*a), to_cnf(*b)),
+        other => other,
     }
 }
 
