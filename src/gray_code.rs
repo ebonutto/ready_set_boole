@@ -7,7 +7,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_simple() {
+    fn test_subject() {
         assert_eq!(gray_code(0), 0);
         assert_eq!(gray_code(1), 1);
         assert_eq!(gray_code(2), 3);
