@@ -1,46 +1,43 @@
-mod arithmetic;
+// mod arithmetic;
 mod boole;
-mod gray_code;
-mod set;
-mod space;
+// mod gray_code;
+// mod set;
+// mod space;
 
-use arithmetic::adder::adder;
-use arithmetic::multiplier::multiplier;
+// use arithmetic::adder::adder;
+// use arithmetic::multiplier::multiplier;
 
-use gray_code::gray_code;
+// use gray_code::gray_code;
 
-use boole::boolean_evaluation::eval_formula;
-use boole::negation_normal_form::negation_normal_form;
-use boole::truth_table::print_truth_table;
+use boole::conjunctive_normal_form::conjunctive_normal_form;
+// use boole::boolean_evaluation::eval_formula;
+// use boole::negation_normal_form::negation_normal_form;
+// use boole::truth_table::print_truth_table;
 
-use set::powerset::powerset;
+// use set::powerset::powerset;
 
-use space::curve::map;
+// use space::curve::map;
 
-fn test_negation_normal_form() {
-    println!("=== Exercise 05 - Negation Normal Form ===");
-    println!(
-        "negation_normal_form(\"AB&!\")   = {}",
-        negation_normal_form("AB&!")
-    );
-    println!(
-        "negation_normal_form(\"AB|!\")   = {}",
-        negation_normal_form("AB|!")
-    );
-    println!(
-        "negation_normal_form(\"AB>\")    = {}",
-        negation_normal_form("AB>")
-    );
-    println!(
-        "negation_normal_form(\"AB=\")    = {}",
-        negation_normal_form("AB=")
-    );
-    println!(
-        "negation_normal_form(\"AB|C&!\") = {}",
-        negation_normal_form("AB|C&!")
-    );
+fn test_cnf() {
+    // println!("{}", conjunctive_normal_form("AB&!"));
+    // // A!B!|
+    // println!("{}", conjunctive_normal_form("AB|!"));
+    // // A!B!&
+    // println!("{}", conjunctive_normal_form("AB|C&"));
+    // // AB|C&
+    // println!("{}", conjunctive_normal_form("AB|C|D|"));
+    // // ABCD|||
+    // println!("{}", conjunctive_normal_form("AB&C&D&"));
+    // // ABCD&&&
+    // println!("{}", conjunctive_normal_form("AB&!C!|"));
+    // // A!B!C!||
+    // println!("{}", conjunctive_normal_form("AB|!C!&"));
+    // A!B!C!&&
+    // println!("{}", conjunctive_normal_form("AB|CD|&"));
+    // println!("{}", conjunctive_normal_form("AB&CD&|"));
+    println!("{}", conjunctive_normal_form("AB&CD&|"));
 }
 
 fn main() {
-    test_negation_normal_form();
+    test_cnf();
 }

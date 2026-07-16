@@ -123,11 +123,13 @@ fn distribute_or(a: Formula, b: Formula) -> Formula {
             Box::new(distribute_or(*x, z.clone())),
             Box::new(distribute_or(*y, z)),
         ),
+
         // Z | (X & Y) <=> (Z | X) & (Z | Y)
         (z, Formula::And(x, y)) => Formula::And(
             Box::new(distribute_or(z.clone(), *x)),
             Box::new(distribute_or(z, *y)),
         ),
+
         (a, b) => Formula::Or(Box::new(a), Box::new(b)),
     }
 }
