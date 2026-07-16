@@ -1,17 +1,21 @@
-// mod arithmetic;
+mod arithmetic;
 mod boole;
-// mod gray_code;
-// mod set;
-// mod space;
+mod gray_code;
+mod set;
+mod space;
 
-// use arithmetic::adder::adder;
-// use arithmetic::multiplier::multiplier;
-// use boole::boolean_evaluation::eval_formula;
-// use boole::truth_table::print_truth_table;
-// use set::powerset::powerset;
-// use space::curve::map;
-// use gray_code::gray_code;
+use arithmetic::adder::adder;
+use arithmetic::multiplier::multiplier;
+
+use gray_code::gray_code;
+
+use boole::boolean_evaluation::eval_formula;
 use boole::negation_normal_form::negation_normal_form;
+use boole::truth_table::print_truth_table;
+
+use set::powerset::powerset;
+
+use space::curve::map;
 
 fn test_negation_normal_form() {
     println!("=== Exercise 05 - Negation Normal Form ===");

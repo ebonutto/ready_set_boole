@@ -25,8 +25,61 @@ pub fn powerset(set: Vec<i32>) -> Vec<Vec<i32>> {
     result
 }
 
-//#[cfg(test)]
-//mod tests {
-//    use super::powerset;
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-//}
+    #[test]
+    fn test_empty() {
+        assert_eq!(powerset(vec![]), vec![vec![]]);
+    }
+
+    #[test]
+    fn test_one_element() {
+        assert_eq!(powerset(vec![1]), vec![vec![], vec![1]]);
+    }
+
+    #[test]
+    fn test_two_elements() {
+        assert_eq!(
+            powerset(vec![1, 2]),
+            vec![vec![], vec![1], vec![2], vec![1, 2]]
+        );
+    }
+
+    #[test]
+    fn test_three_elements() {
+        assert_eq!(
+            powerset(vec![1, 2, 3]),
+            vec![
+                vec![],
+                vec![1],
+                vec![2],
+                vec![1, 2],
+                vec![3],
+                vec![1, 3],
+                vec![2, 3],
+                vec![1, 2, 3]
+            ]
+        );
+    }
+
+    #[test]
+    fn test_negative_numbers() {
+        assert_eq!(
+            powerset(vec![-1, 42]),
+            vec![vec![], vec![-1], vec![42], vec![-1, 42]]
+        );
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_set_too_large() {
+        powerset(vec![
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8,
+            9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6,
+            7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+        ]);
+    }
+}

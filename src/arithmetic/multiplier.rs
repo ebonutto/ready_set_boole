@@ -65,7 +65,10 @@ mod tests {
     #[test]
     fn test_overflow_wraparound() {
         assert_eq!(multiplier(u32::MAX, 2), u32::MAX.wrapping_mul(2));
-        assert_eq!(multiplier(u32::MAX, u32::MAX), u32::MAX.wrapping_mul(u32::MAX));
+        assert_eq!(
+            multiplier(u32::MAX, u32::MAX),
+            u32::MAX.wrapping_mul(u32::MAX)
+        );
         assert_eq!(multiplier(1 << 31, 2), 0);
     }
 
