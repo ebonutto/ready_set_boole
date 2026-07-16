@@ -1,3 +1,4 @@
+// Inverse (Morton code or Z-order curve)
 pub fn reverse_map(n: f64) -> (u16, u16) {
     assert!(
         (0.0..=1.0).contains(&n),
