@@ -34,7 +34,7 @@ mod tests {
     }
 
     #[test]
-    fn test_simple() {
+    fn test_basic() {
         assert_eq!(multiplier(3, 5), 15);
         assert_eq!(multiplier(5, 3), 15);
         assert_eq!(multiplier(6, 4), 24);

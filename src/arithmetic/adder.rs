@@ -20,7 +20,7 @@ mod tests {
     }
 
     #[test]
-    fn test_simple() {
+    fn test_basic() {
         assert_eq!(adder(1, 1), 2);
         assert_eq!(adder(3, 4), 7);
     }
