@@ -47,10 +47,10 @@ mod tests {
 
     #[test]
     fn large_values() {
-        assert_eq!(multiplier(1000, 1000), 1_000_000);
-        assert_eq!(multiplier(65535, 2), 131_070);
-        assert_eq!(multiplier(12357, 4097), 50_626_629);
-        assert_eq!(multiplier(470496, 37), 17_408_352);
+        assert_eq!(multiplier(1000, 1000), 1000000);
+        assert_eq!(multiplier(65535, 2), 131070);
+        assert_eq!(multiplier(12357, 4097), 50626629);
+        assert_eq!(multiplier(470496, 37), 17408352);
     }
 
     #[test]
