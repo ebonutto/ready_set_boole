@@ -104,7 +104,7 @@ pub fn to_nnf(f: Formula) -> Formula {
 
         // (A > B) <=> !A | B
         Formula::Implies(a, b) => {
-            to_nnf(Formula::Or(Box::new(Formula::Not(a)), Box::new(to_nnf(*b)))) // Error ?
+            to_nnf(Formula::Or(Box::new(Formula::Not(a)), b))
         }
 
         // (A = B) <=> (A & B) | (!A & !B)
