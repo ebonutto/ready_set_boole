@@ -19,12 +19,20 @@ mod tests {
     }
 
     #[test]
-    fn addition_with_zero() {
+    fn add_with_zero() {
         assert_eq!(adder(0, 0), 0);
         assert_eq!(adder(0, 42), 42);
         assert_eq!(adder(42, 0), 42);
         assert_eq!(adder(0, u32::MAX), u32::MAX);
         assert_eq!(adder(u32::MAX, 0), u32::MAX);
+    }
+
+    #[test]
+    fn large_values() {
+        assert_eq!(adder(1000, 1000), 2000);
+        assert_eq!(adder(65535, 2), 65537);
+        assert_eq!(adder(12357, 4097), 16454);
+        assert_eq!(adder(470496, 37), 470533);
     }
 
     #[test]
@@ -35,8 +43,17 @@ mod tests {
     }
 
     #[test]
-    fn unsigned_overflow() {
-        assert_eq!(adder(u32::MAX, 1), u32::MAX.wrapping_add(1));
+    fn commutativity() {
+        for a in 0u32..1000 {
+            for b in 0u32..1000 {
+                assert_eq!(adder(a, b), adder(b, a));
+            }
+        }
+    }
+
+    #[test]
+    fn overflow() {
+        assert_eq!(adder(u32::MAX, 1), 0);
         assert_eq!(adder(u32::MAX, u32::MAX), u32::MAX.wrapping_add(u32::MAX));
     }
 

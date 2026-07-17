@@ -37,35 +37,41 @@ mod tests {
     }
 
     #[test]
-    fn test_one() {
+    fn multiply_by_one() {
         assert_eq!(multiplier(1, 1), 1);
         assert_eq!(multiplier(1, 42), 42);
         assert_eq!(multiplier(42, 1), 42);
+        assert_eq!(multiplier(1, u32::MAX), u32::MAX);
+        assert_eq!(multiplier(u32::MAX, 1), u32::MAX);
     }
 
     #[test]
-    fn test_commutative() {
-        for (a, b) in [(3, 5), (17, 9), (123, 456), (0, 999), (1, 1000)] {
-            assert_eq!(multiplier(a, b), multiplier(b, a));
+    fn large_values() {
+        assert_eq!(multiplier(1000, 1000), 1_000_000);
+        assert_eq!(multiplier(65535, 2), 131_070);
+        assert_eq!(multiplier(12357, 4097), 50_626_629);
+        assert_eq!(multiplier(470496, 37), 17_408_352);
+    }
+
+    #[test]
+    fn multiply_by_powers_of_two() {
+        assert_eq!(multiplier(7, 2), 14);
+        assert_eq!(multiplier(7, 4), 28);
+        assert_eq!(multiplier(7, 8), 56);
+        assert_eq!(multiplier(4, 1024), 4096);
+    }
+
+    #[test]
+    fn commutativity() {
+        for a in 0u32..1000 {
+            for b in 0u32..1000 {
+                assert_eq!(multiplier(a, b), multiplier(b, a));
+            }
         }
     }
 
     #[test]
-    fn test_powers_of_two() {
-        assert_eq!(multiplier(7, 2), 14);
-        assert_eq!(multiplier(7, 4), 28);
-        assert_eq!(multiplier(7, 8), 56);
-        assert_eq!(multiplier(1, 1024), 1024);
-    }
-
-    #[test]
-    fn test_large_values() {
-        assert_eq!(multiplier(1000, 1000), 1_000_000);
-        assert_eq!(multiplier(65535, 2), 131070);
-    }
-
-    #[test]
-    fn test_overflow_wraparound() {
+    fn overflow() {
         assert_eq!(multiplier(u32::MAX, 2), u32::MAX.wrapping_mul(2));
         assert_eq!(
             multiplier(u32::MAX, u32::MAX),
@@ -75,9 +81,9 @@ mod tests {
     }
 
     #[test]
-    fn test_against_native_mul() {
-        for a in 0u32..300 {
-            for b in 0u32..300 {
+    fn matches_wrapping_mul() {
+        for a in 0u32..1000 {
+            for b in 0u32..1000 {
                 assert_eq!(multiplier(a, b), a.wrapping_mul(b));
             }
         }
