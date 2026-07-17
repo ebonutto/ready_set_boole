@@ -39,10 +39,10 @@ mod tests {
     #[test]
     fn multiply_by_one() {
         assert_eq!(multiplier(1, 1), 1);
-        assert_eq!(multiplier(1, 42), 42);
         assert_eq!(multiplier(42, 1), 42);
-        assert_eq!(multiplier(1, u32::MAX), u32::MAX);
+        assert_eq!(multiplier(1, 42), 42);
         assert_eq!(multiplier(u32::MAX, 1), u32::MAX);
+        assert_eq!(multiplier(1, u32::MAX), u32::MAX);
     }
 
     #[test]
