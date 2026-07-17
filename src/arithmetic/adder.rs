@@ -2,8 +2,9 @@ pub fn adder(mut a: u32, mut b: u32) -> u32 {
     while b != 0 {
         let carry = (a & b) << 1;
         a ^= b;
-        b = carry
+        b = carry;
     }
+
     a
 }
 
