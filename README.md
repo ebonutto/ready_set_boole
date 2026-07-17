@@ -1,18 +1,17 @@
 # Ready, Set, Boole!
-Discover the basics of computer-related mathematics with Boolean Algebra and Sets Theory!
 
-A!B!|
-A!B!&
-AB|C&
-AB|C|D|
-AB&C&D&
-A!B!|C!|
-A!B!&C!&
+**`ready_set_boole` is a 42 project introducing the basics of computer-related mathematics.**
 
-A!B!|
-A!B!&
-AB|C&
-AB|C|D|
-AB&C&D&
-A!B!|C!|
-A!B!&C!&
+# Contents
+
+WIP
+
+# Exercices
+
+## 00 - Adder
+
+## 03 - Boolean Evaluation
+
+```rust
+fn eval_formula(formula: &str) -> bool;
+```

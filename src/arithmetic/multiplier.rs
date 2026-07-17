@@ -7,11 +7,9 @@ pub fn multiplier(mut a: u32, mut b: u32) -> u32 {
         if (b & 1) == 1 {
             result = adder(result, a);
         }
-
         a <<= 1;
         b >>= 1;
     }
-
     result
 }
 
@@ -20,10 +18,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_zero() {
+    fn basic_multiplication() {
+        assert_eq!(multiplier(3, 5), 15);
+        assert_eq!(multiplier(5, 3), 15);
+        assert_eq!(multiplier(6, 4), 24);
+        assert_eq!(multiplier(7, 7), 49);
+    }
+
+    #[test]
+    fn multiply_by_zero() {
         assert_eq!(multiplier(0, 0), 0);
         assert_eq!(multiplier(0, 42), 0);
         assert_eq!(multiplier(42, 0), 0);
+        assert_eq!(multiplier(1, 0), 0);
+        assert_eq!(multiplier(0, 1), 0);
+        assert_eq!(multiplier(0, u32::MAX), 0);
+        assert_eq!(multiplier(u32::MAX, 0), 0);
     }
 
     #[test]
@@ -31,14 +41,6 @@ mod tests {
         assert_eq!(multiplier(1, 1), 1);
         assert_eq!(multiplier(1, 42), 42);
         assert_eq!(multiplier(42, 1), 42);
-    }
-
-    #[test]
-    fn test_basic() {
-        assert_eq!(multiplier(3, 5), 15);
-        assert_eq!(multiplier(5, 3), 15);
-        assert_eq!(multiplier(6, 4), 24);
-        assert_eq!(multiplier(7, 7), 49);
     }
 
     #[test]
