@@ -4,7 +4,6 @@ pub fn adder(mut a: u32, mut b: u32) -> u32 {
         a ^= b;
         b = carry
     }
-
     a
 }
 
@@ -13,31 +12,36 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_zero() {
-        assert_eq!(adder(0, 0), 0);
-        assert_eq!(adder(0, 5), 5);
-        assert_eq!(adder(5, 0), 5);
-    }
-
-    #[test]
-    fn test_basic() {
+    fn basic_addition() {
         assert_eq!(adder(1, 1), 2);
         assert_eq!(adder(3, 4), 7);
+        assert_eq!(adder(42, 58), 100);
     }
 
     #[test]
-    fn test_carry_cascade() {
+    fn addition_with_zero() {
+        assert_eq!(adder(0, 0), 0);
+        assert_eq!(adder(0, 42), 42);
+        assert_eq!(adder(42, 0), 42);
+        assert_eq!(adder(0, u32::MAX), u32::MAX);
+        assert_eq!(adder(u32::MAX, 0), u32::MAX);
+    }
+
+    #[test]
+    fn carry_propagation() {
         assert_eq!(adder(0b0111, 0b0001), 0b1000);
+        assert_eq!(adder(0b1111, 0b0001), 0b1_0000);
+        assert_eq!(adder(0x00FF_FFFF, 1), 0x0100_0000);
     }
 
     #[test]
-    fn test_overflow_wraparound() {
-        assert_eq!(adder(u32::MAX, 1), 0);
+    fn unsigned_overflow() {
+        assert_eq!(adder(u32::MAX, 1), u32::MAX.wrapping_add(1));
         assert_eq!(adder(u32::MAX, u32::MAX), u32::MAX.wrapping_add(u32::MAX));
     }
 
     #[test]
-    fn test_against_native_add() {
+    fn matches_wrapping_add() {
         for a in 0u32..1000 {
             for b in 0u32..1000 {
                 assert_eq!(adder(a, b), a.wrapping_add(b));
