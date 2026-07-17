@@ -28,12 +28,12 @@ mod tests {
     #[test]
     fn multiply_by_zero() {
         assert_eq!(multiplier(0, 0), 0);
-        assert_eq!(multiplier(0, 42), 0);
         assert_eq!(multiplier(42, 0), 0);
+        assert_eq!(multiplier(0, 42), 0);
         assert_eq!(multiplier(1, 0), 0);
         assert_eq!(multiplier(0, 1), 0);
-        assert_eq!(multiplier(0, u32::MAX), 0);
         assert_eq!(multiplier(u32::MAX, 0), 0);
+        assert_eq!(multiplier(0, u32::MAX), 0);
     }
 
     #[test]

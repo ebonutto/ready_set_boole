@@ -21,10 +21,10 @@ mod tests {
     #[test]
     fn add_with_zero() {
         assert_eq!(adder(0, 0), 0);
-        assert_eq!(adder(0, 42), 42);
         assert_eq!(adder(42, 0), 42);
-        assert_eq!(adder(0, u32::MAX), u32::MAX);
+        assert_eq!(adder(0, 42), 42);
         assert_eq!(adder(u32::MAX, 0), u32::MAX);
+        assert_eq!(adder(0, u32::MAX), u32::MAX);
     }
 
     #[test]
