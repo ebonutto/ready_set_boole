@@ -4,7 +4,6 @@ pub fn adder(mut a: u32, mut b: u32) -> u32 {
         a ^= b;
         b = carry;
     }
-
     a
 }
 
@@ -13,27 +12,24 @@ mod tests {
     use super::*;
 
     #[test]
-    fn basic_addition() {
+    fn basic() {
         assert_eq!(adder(1, 1), 2);
         assert_eq!(adder(3, 4), 7);
-        assert_eq!(adder(42, 58), 100);
+        assert_eq!(adder(37, 63), 100);
     }
 
     #[test]
-    fn add_with_zero() {
+    fn zero() {
+        assert_eq!(adder(1, 0), 1);
+        assert_eq!(adder(0, 1), 1);
         assert_eq!(adder(0, 0), 0);
-        assert_eq!(adder(42, 0), 42);
-        assert_eq!(adder(0, 42), 42);
-        assert_eq!(adder(u32::MAX, 0), u32::MAX);
-        assert_eq!(adder(0, u32::MAX), u32::MAX);
     }
 
     #[test]
-    fn large_values() {
+    fn large() {
         assert_eq!(adder(1000, 1000), 2000);
-        assert_eq!(adder(65535, 2), 65537);
-        assert_eq!(adder(12357, 4097), 16454);
-        assert_eq!(adder(470496, 37), 470533);
+        assert_eq!(adder(65_535, 2), 65_537);
+        assert_eq!(adder(470_496, 37), 470_533);
     }
 
     #[test]

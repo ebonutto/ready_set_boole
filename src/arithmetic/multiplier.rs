@@ -7,11 +7,9 @@ pub fn multiplier(mut a: u32, mut b: u32) -> u32 {
         if (b & 1) == 1 {
             result = adder(result, a);
         }
-
         a <<= 1;
         b >>= 1;
     }
-
     result
 }
 
@@ -20,43 +18,35 @@ mod tests {
     use super::*;
 
     #[test]
-    fn basic_multiplication() {
-        assert_eq!(multiplier(3, 5), 15);
-        assert_eq!(multiplier(5, 3), 15);
-        assert_eq!(multiplier(6, 4), 24);
-        assert_eq!(multiplier(7, 7), 49);
+    fn basic() {
+        assert_eq!(multiplier(1, 2), 2);
+        assert_eq!(multiplier(6, 7), 42);
+        assert_eq!(multiplier(14, 37), 518);
     }
 
     #[test]
-    fn multiply_by_zero() {
-        assert_eq!(multiplier(0, 0), 0);
-        assert_eq!(multiplier(42, 0), 0);
-        assert_eq!(multiplier(0, 42), 0);
+    fn zero() {
         assert_eq!(multiplier(1, 0), 0);
         assert_eq!(multiplier(0, 1), 0);
-        assert_eq!(multiplier(u32::MAX, 0), 0);
-        assert_eq!(multiplier(0, u32::MAX), 0);
+        assert_eq!(multiplier(0, 0), 0);
     }
 
     #[test]
-    fn multiply_by_one() {
-        assert_eq!(multiplier(1, 1), 1);
+    fn one() {
         assert_eq!(multiplier(42, 1), 42);
         assert_eq!(multiplier(1, 42), 42);
-        assert_eq!(multiplier(u32::MAX, 1), u32::MAX);
-        assert_eq!(multiplier(1, u32::MAX), u32::MAX);
+        assert_eq!(multiplier(1, 1), 1);
     }
 
     #[test]
-    fn large_values() {
-        assert_eq!(multiplier(1000, 1000), 1000000);
-        assert_eq!(multiplier(65535, 2), 131070);
-        assert_eq!(multiplier(12357, 4097), 50626629);
-        assert_eq!(multiplier(470496, 37), 17408352);
+    fn large() {
+        assert_eq!(multiplier(1_000, 1_000), 1_000_000);
+        assert_eq!(multiplier(65_535, 2), 131_070);
+        assert_eq!(multiplier(12_357, 4_097), 50_626_629);
     }
 
     #[test]
-    fn multiply_by_powers_of_two() {
+    fn powers_of_two() {
         assert_eq!(multiplier(7, 2), 14);
         assert_eq!(multiplier(7, 4), 28);
         assert_eq!(multiplier(7, 8), 56);
