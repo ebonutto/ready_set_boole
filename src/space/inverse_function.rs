@@ -15,7 +15,6 @@ pub fn reverse_map(n: f64) -> (u16, u16) {
         y |= (((z >> (2 * i + 1)) & 1) as u16) << i;
         x |= (((z >> (2 * i)) & 1) as u16) << i;
     }
-
     (x, y)
 }
 
@@ -24,21 +23,29 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_extremes() {
+    fn extremes() {
         assert_eq!(reverse_map(0.0), (0, 0));
         assert_eq!(reverse_map(1.0), (u16::MAX, u16::MAX));
     }
 
     #[test]
-    fn test_single_bits() {
+    fn bit_interleaving() {
         assert_eq!(reverse_map(1.0 / u32::MAX as f64), (1, 0));
         assert_eq!(reverse_map(2.0 / u32::MAX as f64), (0, 1));
         assert_eq!(reverse_map(3.0 / u32::MAX as f64), (1, 1));
+        assert_eq!(reverse_map(4.0 / u32::MAX as f64), (2, 0));
+        assert_eq!(reverse_map(8.0 / u32::MAX as f64), (0, 2));
     }
 
     #[test]
-    fn test_first_shift() {
-        assert_eq!(reverse_map(4.0 / u32::MAX as f64), (2, 0));
-        assert_eq!(reverse_map(8.0 / u32::MAX as f64), (0, 2));
+    #[should_panic]
+    fn out_of_range_below_zero() {
+        reverse_map(-0.1);
+    }
+
+    #[test]
+    #[should_panic]
+    fn out_of_range_above_one() {
+        reverse_map(1.1);
     }
 }
