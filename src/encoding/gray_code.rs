@@ -7,7 +7,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn subject_examples() {
+    fn basic() {
         assert_eq!(gray_code(0), 0);
         assert_eq!(gray_code(1), 1);
         assert_eq!(gray_code(2), 3);
@@ -20,9 +20,9 @@ mod tests {
     }
 
     #[test]
-    fn large_values() {
+    fn large() {
         assert_eq!(gray_code(42), 63);
         assert_eq!(gray_code(255), 128);
-        assert_eq!(gray_code(4096), 6144);
+        assert_eq!(gray_code(4_096), 6_144);
     }
 }
