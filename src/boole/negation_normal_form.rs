@@ -11,11 +11,31 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_subject() {
+    fn basic() {
+        assert_eq!(negation_normal_form("A"), "A");
+        assert_eq!(negation_normal_form("A!"), "A!");
         assert_eq!(negation_normal_form("AB&!"), "A!B!|");
         assert_eq!(negation_normal_form("AB|!"), "A!B!&");
+    }
+
+    #[test]
+    fn operators() {
+        assert_eq!(negation_normal_form("AB^"), "AB!&A!B&|");
         assert_eq!(negation_normal_form("AB>"), "A!B|");
         assert_eq!(negation_normal_form("AB="), "AB&A!B!&|");
+    }
+
+    #[test]
+    fn negations() {
+        assert_eq!(negation_normal_form("A!!"), "A");
+        assert_eq!(negation_normal_form("AB^!"), "AB&A!B!&|");
+        assert_eq!(negation_normal_form("AB>!"), "AB!&");
+        assert_eq!(negation_normal_form("AB=!"), "AB!&A!B&|");
+    }
+
+    #[test]
+    fn complex() {
         assert_eq!(negation_normal_form("AB|C&!"), "A!B!&C!|");
+        assert_eq!(negation_normal_form("AB&C|!"), "A!B!|C!&");
     }
 }
