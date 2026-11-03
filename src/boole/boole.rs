@@ -14,43 +14,65 @@ pub fn parse(formula: &str) -> Formula {
 
     for c in formula.chars() {
         match c {
-            'A'..'Z' => stack.push(Formula::Var(c)),
+            'A'..='Z' => stack.push(Formula::Var(c)),
             '!' => {
-                let a = stack.pop().expect("parse: stack underflow on '!'");
+                let a = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '!'");
                 stack.push(Formula::Not(Box::new(a)));
             }
             '&' => {
-                let b = stack.pop().expect("parse: stack underflow on '&'");
-                let a = stack.pop().expect("parse: stack underflow on '&'");
+                let b = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '&'");
+                let a = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '&'");
                 stack.push(Formula::And(Box::new(a), Box::new(b)));
             }
             '|' => {
-                let b = stack.pop().expect("parse: stack underflow on '|'");
-                let a = stack.pop().expect("parse: stack underflow on '|'");
+                let b = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '|'");
+                let a = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '|'");
                 stack.push(Formula::Or(Box::new(a), Box::new(b)));
             }
             '^' => {
-                let b = stack.pop().expect("parse: stack underflow on '^'");
-                let a = stack.pop().expect("parse: stack underflow on '^'");
+                let b = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '^'");
+                let a = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '^'");
                 stack.push(Formula::Xor(Box::new(a), Box::new(b)));
             }
             '>' => {
-                let b = stack.pop().expect("parse: stack underflow on '>'");
-                let a = stack.pop().expect("parse: stack underflow on '>'");
+                let b = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '>'");
+                let a = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '>'");
                 stack.push(Formula::Implies(Box::new(a), Box::new(b)));
             }
             '=' => {
-                let b = stack.pop().expect("parse: stack underflow on '='");
-                let a = stack.pop().expect("parse: stack underflow on '='");
+                let b = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '='");
+                let a = stack
+                    .pop()
+                    .expect("parse: invalid formula: stack underflow on '='");
                 stack.push(Formula::Equiv(Box::new(a), Box::new(b)));
             }
-            _ => panic!("parse: invalid character '{}'", c),
+            _ => panic!("parse: invalid formula: invalid character '{}'", c),
         }
     }
 
     if stack.len() != 1 {
         panic!(
-            "parse: final stack has {} element(s) instead of 1",
+            "parse: invalid formula: final stack has {} element(s) instead of 1",
             stack.len()
         );
     }
@@ -138,6 +160,7 @@ pub fn to_cnf(f: Formula) -> Formula {
         Formula::Or(a, b) => distribute_or(to_cnf(*a), to_cnf(*b)),
         other => other,
     }
+    // right_associate(cnf)
 }
 
 pub fn to_rpn(f: &Formula) -> String {
